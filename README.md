@@ -59,8 +59,8 @@ The repository will favor explicit domain boundaries, server-side authorization,
 
 ## Status
 
-**Stage 3 — workspaces and channels in progress.**
+**Stage 4 — realtime messaging in progress.**
 
-Implemented so far: PostgreSQL identity and memberships, JWT authentication, transactional workspace creation, server-authorized channels, and a responsive Next.js collaboration shell.
+Implemented so far: PostgreSQL identity/memberships, JWT authentication, transactional workspaces, authorized channels, durable message history, authenticated Socket.IO rooms, persist-before-broadcast delivery, reconnect resynchronization, and a realtime Next.js chat client.
 
 Built by **Julian Carvalho** as a software engineering portfolio project.
