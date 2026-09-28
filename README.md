@@ -59,8 +59,8 @@ The repository will favor explicit domain boundaries, server-side authorization,
 
 ## Status
 
-**Stage 5 — presence, typing and mobile realtime UX in progress.**
+**Stage 6 — Redis-backed horizontal realtime scaling in progress.**
 
-Implemented so far: durable authenticated realtime messaging plus channel presence, multi-connection awareness, expiring typing indicators, reconnect synchronization, and mobile channel/chat navigation.
+Implemented so far: durable authenticated realtime messaging, Redis-backed Socket.IO fan-out, TTL/heartbeat presence shared across API instances, multi-connection awareness, typing indicators, reconnect synchronization, and mobile chat UX.
 
 Built by **Julian Carvalho** as a software engineering portfolio project.
