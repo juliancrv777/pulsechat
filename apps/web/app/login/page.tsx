@@ -1,0 +1,1 @@
+import Link from 'next/link';import {AuthForm} from '../auth/auth-form';export default function Login(){return <main><section><span>PULSECHAT</span><h1>Welcome back</h1><p>Sign in to continue to your realtime workspace.</p><AuthForm mode="login"/><p className="switch">New here? <Link href="/register">Create an account</Link></p></section></main>}
