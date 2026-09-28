@@ -59,7 +59,7 @@ The repository will favor explicit domain boundaries, server-side authorization,
 
 ## Status
 
-**Stage 6 — Redis-backed horizontal realtime scaling in progress.**
+**Stage 7 — production readiness and deployment in progress.**
 
 Implemented so far: durable authenticated realtime messaging, Redis-backed Socket.IO fan-out, TTL/heartbeat presence shared across API instances, multi-connection awareness, typing indicators, reconnect synchronization, and mobile chat UX.
 
