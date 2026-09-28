@@ -1,0 +1,1 @@
+import type { ReactNode } from 'react';import './globals.css';export const metadata={title:'PulseChat',description:'Real-time collaboration platform'};export default function RootLayout({children}:{children:ReactNode}){return <html lang="en"><body>{children}</body></html>}
