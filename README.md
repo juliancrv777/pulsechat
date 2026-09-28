@@ -59,8 +59,8 @@ The repository will favor explicit domain boundaries, server-side authorization,
 
 ## Status
 
-**Stage 2 — database and authentication in progress.**
+**Stage 3 — workspaces and channels in progress.**
 
-Implemented in this stage: versioned PostgreSQL schema for users/workspaces/memberships, JWT authentication API, validated register/login endpoints, protected `/auth/me`, and Next.js authentication screens.
+Implemented so far: PostgreSQL identity and memberships, JWT authentication, transactional workspace creation, server-authorized channels, and a responsive Next.js collaboration shell.
 
 Built by **Julian Carvalho** as a software engineering portfolio project.

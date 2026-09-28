@@ -21,6 +21,7 @@ model User {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   memberships  Membership[]
+  channelsCreated Channel[]
 }
 
 model Workspace {
@@ -30,6 +31,7 @@ model Workspace {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   memberships Membership[]
+  channels    Channel[]
 }
 
 model Membership {
@@ -42,5 +44,19 @@ model Membership {
   workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
   @@unique([userId, workspaceId])
+  @@index([workspaceId])
+}
+
+model Channel {
+  id          String    @id @default(cuid())
+  name        String
+  workspaceId String
+  createdById String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy   User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@unique([workspaceId, name])
   @@index([workspaceId])
 }
