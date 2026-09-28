@@ -22,6 +22,7 @@ model User {
   updatedAt    DateTime     @updatedAt
   memberships  Membership[]
   channelsCreated Channel[]
+  messages        Message[]
 }
 
 model Workspace {
@@ -56,7 +57,20 @@ model Channel {
   updatedAt   DateTime  @updatedAt
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   createdBy   User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  messages    Message[]
 
   @@unique([workspaceId, name])
   @@index([workspaceId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  channelId String
+  authorId  String
+  createdAt DateTime @default(now())
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([channelId, createdAt])
 }
