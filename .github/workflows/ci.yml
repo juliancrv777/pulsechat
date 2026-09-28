@@ -12,6 +12,7 @@ jobs:
         with:
           node-version: 22
       - run: npm install --ignore-scripts
+      - run: npm run prisma:generate -w @pulsechat/api
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
