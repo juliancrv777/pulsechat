@@ -59,8 +59,8 @@ The repository will favor explicit domain boundaries, server-side authorization,
 
 ## Status
 
-**Stage 4 — realtime messaging in progress.**
+**Stage 5 — presence, typing and mobile realtime UX in progress.**
 
-Implemented so far: PostgreSQL identity/memberships, JWT authentication, transactional workspaces, authorized channels, durable message history, authenticated Socket.IO rooms, persist-before-broadcast delivery, reconnect resynchronization, and a realtime Next.js chat client.
+Implemented so far: durable authenticated realtime messaging plus channel presence, multi-connection awareness, expiring typing indicators, reconnect synchronization, and mobile channel/chat navigation.
 
 Built by **Julian Carvalho** as a software engineering portfolio project.
