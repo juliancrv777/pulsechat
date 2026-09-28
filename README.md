@@ -59,6 +59,8 @@ The repository will favor explicit domain boundaries, server-side authorization,
 
 ## Status
 
-**Stage 1 — foundation in progress.**
+**Stage 2 — database and authentication in progress.**
+
+Implemented in this stage: versioned PostgreSQL schema for users/workspaces/memberships, JWT authentication API, validated register/login endpoints, protected `/auth/me`, and Next.js authentication screens.
 
 Built by **Julian Carvalho** as a software engineering portfolio project.
