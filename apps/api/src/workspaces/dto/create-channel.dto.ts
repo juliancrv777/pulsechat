@@ -1,0 +1,1 @@
+import {IsString,MaxLength,MinLength,Matches} from 'class-validator';export class CreateChannelDto{@IsString()@MinLength(2)@MaxLength(48)@Matches(/^[a-z0-9-]+$/)name!:string}
