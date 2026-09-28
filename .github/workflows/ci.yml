@@ -16,3 +16,5 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - run: docker build -f apps/api/Dockerfile -t pulsechat-api .
+      - run: docker build -f apps/web/Dockerfile -t pulsechat-web .

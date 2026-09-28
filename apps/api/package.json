@@ -9,7 +9,9 @@
     "typecheck": "tsc --noEmit",
     "test": "jest --runInBand",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "start:prod": "npm run prisma:deploy && node dist/main.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",
@@ -26,7 +28,9 @@
     "@nestjs/websockets": "^11.1.0",
     "socket.io": "^4.8.1",
     "@socket.io/redis-adapter": "^8.3.0",
-    "redis": "^5.8.2"
+    "redis": "^5.8.2",
+    "@nestjs/throttler": "^6.4.0",
+    "helmet": "^8.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.0",
