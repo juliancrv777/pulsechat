@@ -1,0 +1,1 @@
+import {HealthController} from './health.controller';describe('HealthController',()=>{it('reports healthy foundation',()=>expect(new HealthController().check()).toEqual({status:'ok',service:'pulsechat-api'}))})

@@ -1,0 +1,12 @@
+{
+  "name": "pulsechat",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "build": "npm run build -w @pulsechat/web && npm run build -w @pulsechat/api",
+    "test": "npm run test -w @pulsechat/web && npm run test -w @pulsechat/api",
+    "typecheck": "npm run typecheck -w @pulsechat/web && npm run typecheck -w @pulsechat/api"
+  },
+  "engines": {"node": ">=22 <23"}
+}

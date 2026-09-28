@@ -1,0 +1,1 @@
+export default function Home(){return <main><section><span>REAL-TIME COLLABORATION</span><h1>PulseChat</h1><p>A resilient messaging workspace engineered around durable history, realtime delivery and reconnect-safe state.</p><div className="status"><i/> Foundation online</div></section></main>}
