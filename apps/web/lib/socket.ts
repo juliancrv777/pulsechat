@@ -1,0 +1,1 @@
+import {io,type Socket} from 'socket.io-client';import type {Session} from './auth';const SOCKET_URL=(process.env.NEXT_PUBLIC_API_URL??'http://localhost:4000/api').replace(/\/api\/?$/,'');export function connectChat(session:Session):Socket{return io(`${SOCKET_URL}/chat`,{auth:{token:session.accessToken},transports:['websocket']})}
