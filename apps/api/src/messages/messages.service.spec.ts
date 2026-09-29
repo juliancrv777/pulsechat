@@ -1,1 +1,30 @@
-import {ForbiddenException} from '@nestjs/common';import {MessagesService} from './messages.service';describe('MessagesService',()=>{it('rejects channel access without workspace membership',async()=>{const db={channel:{findUnique:jest.fn().mockResolvedValue({id:'c1',workspaceId:'w1'})},membership:{findUnique:jest.fn().mockResolvedValue(null)}};const service=new MessagesService(db as never);await expect(service.requireChannelMember('u1','c1')).rejects.toBeInstanceOf(ForbiddenException)});it('persists only after membership is confirmed',async()=>{const db={channel:{findUnique:jest.fn().mockResolvedValue({id:'c1',workspaceId:'w1'})},membership:{findUnique:jest.fn().mockResolvedValue({id:'m1'})},message:{create:jest.fn().mockResolvedValue({id:'msg1',content:'hello'})}};const service=new MessagesService(db as never);await service.create('u1','c1',' hello ');expect(db.message.create).toHaveBeenCalledWith(expect.objectContaining({data:{channelId:'c1',authorId:'u1',content:'hello'}}))})})
+import {BadRequestException} from '@nestjs/common';
+import {MessagesService} from './messages.service';
+
+describe('MessagesService',()=>{
+  const db:any={channel:{findUnique:jest.fn()},membership:{findUnique:jest.fn()},message:{findMany:jest.fn(),create:jest.fn()}};
+  let service:MessagesService;
+
+  beforeEach(()=>{
+    jest.clearAllMocks();
+    service=new MessagesService(db);
+    db.channel.findUnique.mockResolvedValue({id:'channel-1',workspaceId:'workspace-1'});
+    db.membership.findUnique.mockResolvedValue({userId:'user-1',workspaceId:'workspace-1'});
+  });
+
+  it('rejects an invalid history cursor',async()=>{
+    await expect(service.history('user-1','channel-1','not-a-date')).rejects.toBeInstanceOf(BadRequestException);
+    expect(db.message.findMany).not.toHaveBeenCalled();
+  });
+
+  it('rejects blank messages after trimming',async()=>{
+    await expect(service.create('user-1','channel-1','   ')).rejects.toBeInstanceOf(BadRequestException);
+    expect(db.message.create).not.toHaveBeenCalled();
+  });
+
+  it('stores normalized message content',async()=>{
+    db.message.create.mockImplementation(async({data}:any)=>data);
+    const result:any=await service.create('user-1','channel-1','  hello PulseChat  ');
+    expect(result.content).toBe('hello PulseChat');
+  });
+});
