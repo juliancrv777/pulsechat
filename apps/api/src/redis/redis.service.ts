@@ -6,19 +6,40 @@ export class RedisService implements OnModuleDestroy {
   private readonly logger = new Logger(RedisService.name);
   private client?: RedisClientType;
 
-  async getClient() {
-    const redisUrl = process.env.REDIS_URL;
+  private normalizeRedisUrl(value: string) {
+    try {
+      const parsed = new URL(value);
 
-    if (!redisUrl) {
+      if (
+        parsed.protocol === 'redis:' &&
+        parsed.hostname.toLowerCase().endsWith('.upstash.io')
+      ) {
+        parsed.protocol = 'rediss:';
+        this.logger.log('Upstash Redis detected; TLS enabled automatically');
+        return parsed.toString();
+      }
+    } catch {
+      return value;
+    }
+
+    return value;
+  }
+
+  async getClient() {
+    const rawRedisUrl = process.env.REDIS_URL;
+
+    if (!rawRedisUrl) {
       return undefined;
     }
 
-    if (!/^rediss?:\/\//i.test(redisUrl)) {
+    if (!/^rediss?:\/\//i.test(rawRedisUrl)) {
       this.logger.warn(
         'REDIS_URL must use redis:// or rediss://. Redis integration disabled; API will continue in single-instance mode.',
       );
       return undefined;
     }
+
+    const redisUrl = this.normalizeRedisUrl(rawRedisUrl);
 
     if (!this.client) {
       const client = createClient({
