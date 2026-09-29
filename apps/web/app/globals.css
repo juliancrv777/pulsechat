@@ -3,3 +3,5 @@
 
 .mobile-workspace-create{padding:20px 16px;display:grid;gap:10px;margin:0}.mobile-workspace-create strong{font-size:16px}.mobile-workspace-create .sidebar-error{margin:0}
 /* Railway web auto-deploy connected. */
+
+.channel-sidebar footer .sign-out{margin-top:8px;padding:8px 10px;background:#171d2b;color:#cbd5e1;font-size:12px}.channel-sidebar footer .service-warning{color:#fbbf24;white-space:normal}.channel-sidebar footer .sign-out:hover{background:#252c40}
