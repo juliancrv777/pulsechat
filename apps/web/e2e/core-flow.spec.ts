@@ -18,24 +18,11 @@ async function createWorkspace(page:Page,name:string,slug:string){
   await expect(page.getByRole('button',{name:'Send'})).toBeEnabled();
 }
 
-test('registers, creates a workspace, sends and restores a message',async({page})=>{
-  const stamp=Date.now();
-  const message=`persistent message ${stamp}`;
-  await register(page,'E2E User',`e2e-${stamp}@example.com`);
-  await createWorkspace(page,`E2E ${stamp}`,`e2e-${stamp}`);
-
-  await page.getByLabel('Message').fill(message);
-  await page.getByRole('button',{name:'Send'}).click();
-  await expect(page.getByText(message,{exact:true})).toBeVisible();
-
-  await page.reload();
-  await expect(page.getByText(message,{exact:true})).toBeVisible();
-});
-
-test('two users share presence and exchange realtime messages',async({browser})=>{
+test('two users collaborate in realtime and messages persist',async({browser})=>{
   const stamp=Date.now();
   const emailA=`owner-${stamp}@example.com`;
   const emailB=`member-${stamp}@example.com`;
+  const team=`Team ${stamp}`;
   const contextA=await browser.newContext();
   const contextB=await browser.newContext();
   const a=await contextA.newPage();
@@ -43,21 +30,20 @@ test('two users share presence and exchange realtime messages',async({browser})=
 
   try{
     await register(a,'Owner E2E',emailA);
-    await createWorkspace(a,`Team ${stamp}`,`team-${stamp}`);
-
+    await createWorkspace(a,team,`team-${stamp}`);
     await register(b,'Member E2E',emailB);
 
     a.once('dialog',dialog=>dialog.accept(emailB));
     await a.getByRole('button',{name:'+ Add member'}).click();
-    await expect(a.getByText(`Member E2E added to Team ${stamp}`,{exact:true})).toBeVisible();
+    await expect(a.getByText(`Member E2E added to ${team}`,{exact:true})).toBeVisible();
 
     await b.reload();
     await expect(b.getByRole('button',{name:'# general',exact:true})).toBeVisible();
     await expect(b.getByText('Live',{exact:true})).toBeVisible();
     await expect(b.getByRole('button',{name:'Send'})).toBeEnabled();
 
-    await expect(a.getByText(/Team .* · 2 online/)).toBeVisible();
-    await expect(b.getByText(/Team .* · 2 online/)).toBeVisible();
+    await expect(a.getByText(`${team} · 2 online`,{exact:true})).toBeVisible();
+    await expect(b.getByText(`${team} · 2 online`,{exact:true})).toBeVisible();
 
     const fromA=`hello from A ${stamp}`;
     await a.getByLabel('Message').fill(fromA);
@@ -68,6 +54,10 @@ test('two users share presence and exchange realtime messages',async({browser})=
     await b.getByLabel('Message').fill(fromB);
     await b.getByRole('button',{name:'Send'}).click();
     await expect(a.getByText(fromB,{exact:true})).toBeVisible();
+
+    await b.reload();
+    await expect(b.getByText(fromA,{exact:true})).toBeVisible();
+    await expect(b.getByText(fromB,{exact:true})).toBeVisible();
   }finally{
     await contextA.close();
     await contextB.close();
