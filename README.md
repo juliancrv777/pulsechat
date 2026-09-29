@@ -8,6 +8,14 @@ A production-deployed real-time collaboration app built as a software engineerin
 
 PulseChat demonstrates authenticated multi-user messaging, persistent history, presence and typing state, Redis-backed Socket.IO fan-out, role-based workspace membership, automated tests and continuous integration.
 
+## Demo
+
+**Production:** https://web-production-b634e.up.railway.app
+
+A recruiter can create two independent accounts, create a workspace with the first account, add the second account by email and open `#general` on both clients. PulseChat will show both users online and deliver messages bidirectionally in real time; reloading the page demonstrates PostgreSQL-backed persistence.
+
+> Portfolio note: the same two-user collaboration flow is executed automatically in CI with Playwright against isolated PostgreSQL and Redis services.
+
 ## What is implemented
 
 - Email/password authentication with JWT-protected API routes
