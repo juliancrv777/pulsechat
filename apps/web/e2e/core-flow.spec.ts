@@ -18,7 +18,7 @@ test('registers, creates a workspace, sends and restores a message',async({page}
   await page.getByPlaceholder('workspace-slug').first().fill(slug);
   await page.getByRole('button',{name:'Create workspace'}).first().click();
 
-  await expect(page.getByText('# general',{exact:true})).toBeVisible();
+  await expect(page.getByRole('button',{name:'# general',exact:true})).toBeVisible();
   await expect(page.getByText('Live',{exact:true})).toBeVisible();
 
   await page.getByLabel('Message').fill(message);
