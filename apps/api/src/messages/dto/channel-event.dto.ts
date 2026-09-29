@@ -1,0 +1,1 @@
+import {IsBoolean,IsString,MinLength} from 'class-validator';export class ChannelEventDto{@IsString()@MinLength(1)channelId!:string}export class TypingEventDto extends ChannelEventDto{@IsBoolean()typing!:boolean}
