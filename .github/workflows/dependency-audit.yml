@@ -19,3 +19,7 @@ jobs:
         run: |
           npm install
           npm audit --audit-level=moderate
+          npm run prisma:generate -w @pulsechat/api
+          npm run typecheck
+          npm test
+          npm run build
