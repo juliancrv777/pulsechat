@@ -1,4 +1,5 @@
 export type Session={accessToken:string;user:{id:string;email:string;name:string}};
+export type SessionStatus='valid'|'invalid'|'unavailable';
 const API=process.env.NEXT_PUBLIC_API_URL??'http://localhost:4000/api';
 
 export async function authenticate(mode:'login'|'register',payload:Record<string,string>):Promise<Session>{
@@ -14,14 +15,16 @@ export async function authenticate(mode:'login'|'register',payload:Record<string
   return response.json();
 }
 
-export async function validateSession(session:Session):Promise<boolean>{
+export async function validateSession(session:Session):Promise<SessionStatus>{
   try{
     const response=await fetch(`${API}/auth/me`,{
       headers:{Authorization:`Bearer ${session.accessToken}`},
       cache:'no-store',
     });
-    return response.ok;
+    if(response.ok)return 'valid';
+    if(response.status===401||response.status===403)return 'invalid';
+    return 'unavailable';
   }catch{
-    return false;
+    return 'unavailable';
   }
 }
