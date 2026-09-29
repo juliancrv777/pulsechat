@@ -1,5 +1,7 @@
 # PulseChat
 
+[![CI](https://github.com/juliancrv777/pulsechat/actions/workflows/ci.yml/badge.svg)](https://github.com/juliancrv777/pulsechat/actions/workflows/ci.yml)
+
 A production-deployed real-time collaboration app built as a software engineering portfolio project.
 
 **Live app:** https://web-production-b634e.up.railway.app
