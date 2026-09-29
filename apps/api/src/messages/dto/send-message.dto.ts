@@ -12,3 +12,4 @@ export class SendMessageDto {
   @MaxLength(4000)
   content!: string;
 }
+// Message payloads are normalized before validation.
