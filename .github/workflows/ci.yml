@@ -16,25 +16,79 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
       - name: Install dependencies
         run: npm install
-
       - name: Generate Prisma client
         run: npm run prisma:generate -w @pulsechat/api
-
       - name: Typecheck
         run: npm run typecheck
-
       - name: Test
         run: npm test
-
       - name: Build
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: pulsechat
+          POSTGRES_PASSWORD: pulsechat
+          POSTGRES_DB: pulsechat
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pulsechat"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://pulsechat:pulsechat@127.0.0.1:5432/pulsechat
+      REDIS_URL: redis://127.0.0.1:6379
+      JWT_SECRET: e2e-only-secret-not-used-in-production
+      WEB_ORIGIN: http://127.0.0.1:3000
+      NEXT_PUBLIC_API_URL: http://127.0.0.1:4000/api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - name: Prepare database
+        run: |
+          npm run prisma:generate -w @pulsechat/api
+          npm run prisma:deploy -w @pulsechat/api
+      - name: Build applications
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+      - name: Start API and Web
+        run: |
+          npm run start -w @pulsechat/api > /tmp/pulsechat-api.log 2>&1 &
+          npm run start -w @pulsechat/web -- -H 127.0.0.1 > /tmp/pulsechat-web.log 2>&1 &
+          npx wait-on http://127.0.0.1:4000/api/health http://127.0.0.1:3000
+      - name: Run Playwright
+        run: npm run e2e -w @pulsechat/web
