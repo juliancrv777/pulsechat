@@ -6,7 +6,7 @@ import { RedisService } from './redis.service';
 
 export class RedisIoAdapter extends IoAdapter {
   private adapterConstructor?: ReturnType<typeof createAdapter>;
-  private readonly logger = new Logger(RedisIoAdapter.name);
+  private readonly redisLogger = new Logger(RedisIoAdapter.name);
 
   constructor(
     app: INestApplicationContext,
@@ -19,7 +19,7 @@ export class RedisIoAdapter extends IoAdapter {
     const pub = await this.redis.getClient();
 
     if (!pub) {
-      this.logger.warn(
+      this.redisLogger.warn(
         'Redis unavailable; Socket.IO is running in single-instance mode',
       );
       return;
@@ -32,7 +32,7 @@ export class RedisIoAdapter extends IoAdapter {
     }
 
     this.adapterConstructor = createAdapter(pub, sub);
-    this.logger.log('Socket.IO Redis adapter enabled');
+    this.redisLogger.log('Socket.IO Redis adapter enabled');
   }
 
   createIOServer(port: number, options?: Record<string, unknown>) {
